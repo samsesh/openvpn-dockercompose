@@ -24,7 +24,13 @@ dockercheck() {
     sleep 5
     clear
 }
-
+getimage() {
+    clear
+    echo "get docker image"
+    sleep 5
+    docker compose pull
+    clear
+}
 getadd() {
     # Prompt user for domain or IP address
     read -p "Enter domain or IP address (leave blank for public IP): " address
@@ -113,7 +119,11 @@ changeport() {
     # Replace "1194" with new port number in openvpn.conf
     sed -i "s/1194/$new_port/g" ./openvpn-data/conf/openvpn.conf
     sed -i "s/proto udp/proto $protocol/" ./openvpn-data/conf/openvpn.conf
-    echo "Port number changed to $new_port"
+    clear
+    sudo chown -R $(whoami): ./openvpn-data
+    echo "now run this command"
+    echo "docker-compose run --rm openvpn ovpn_initpki"
+
 }
 
 #run
