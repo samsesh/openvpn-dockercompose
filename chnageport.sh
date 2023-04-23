@@ -73,6 +73,7 @@ getadd() {
 }
 
 genconfdocker() {
+    # run docker for create config file
     docker-compose run --rm openvpn ovpn_genconfig -u $protocol://$address
 }
 
@@ -87,7 +88,8 @@ changeport() {
 
     # Replace "1194" with new port number in docker-compose.yml
     sed -i "s/1194/$new_port/g" ./docker-compose.yml
-
+    # run docker for create config file
+    genconfdocker
     # Replace "1194" with new port number in openvpn.conf
     sed -i "s/1194/$new_port/g" ./openvpn-data/conf/openvpn.conf
 
@@ -97,5 +99,4 @@ changeport() {
 #run
 dockercheck
 getadd
-genconfdocker
 changeport
