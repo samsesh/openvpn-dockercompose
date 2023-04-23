@@ -111,18 +111,19 @@ changeport() {
             echo "Invalid input. Please enter 'y' or 'n'."
         fi
     done
-    # Replace "1194" with new port number in docker-compose.yml
-    sed -i "s/$current_port:/$new_port:/" ./docker-compose.yml
-    sed -i "s/^container_name:.*/container_name:$container_name_open/g" $file_location_open/docker-compose.yml
+
     # run docker for create config file
     genconfdocker
-    # Replace "1194" with new port number in openvpn.conf
-    sed -i "s/1194/$new_port/g" ./openvpn-data/conf/openvpn.conf
+    # Replace new port number in docker-compose.yml
+    sed -i "s/$current_port/$new_port/g" ./openvpn-data/conf/openvpn.conf
     sed -i "s/proto udp/proto $protocol/" ./openvpn-data/conf/openvpn.conf
     clear
     sudo chown -R $(whoami): ./openvpn-data
-    echo "now run this command"
+    echo "$(tput setaf 2)now run this command for set passphrase for openvpn server$(tput sgr0)"
     echo "docker-compose run --rm openvpn ovpn_initpki"
+    echo ""
+    echo "$(tput setaf 2)then run this command for start your server$(tput sgr0)"
+    echo "docker compose up -d"
 
 }
 
