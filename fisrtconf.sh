@@ -78,21 +78,41 @@ genconfdocker() {
 }
 
 changeport() {
-    # Prompt user for new port number, default is 1194
-    read -p "Enter new port number (default is 1194): " new_port
+    # Check current port in docker-compose.yml file
+    current_port=$(grep -oP '\d+:\d+\/udp' docker-compose.yml | cut -d':' -f1)
+    while true; do
+        read -p "Enter new port number (Current port is $current_port)Do you want to change it? (y/n): " confirm
 
-    # Use default port number if user enters nothing
-    if [[ -z "$new_port" ]]; then
-        new_port=1194
-    fi
+        if [[ "$confirm" == "n" ]]; then
+            new_port=$current_port
+            break
+        elif [[ "$confirm" == "y" ]]; then
+            # Prompt user for new port number
+            while true; do
+                read -p "Enter new port number (10-65535): " new_port
 
+                # Check that port number is valid
+                if ! [[ "$new_port" =~ ^[0-9]+$ ]]; then
+                    echo "Invalid port number: $new_port"
+                elif ((new_port < 10)) || ((new_port > 65535)); then
+                    echo "Invalid port number: $new_port (must be between 1024 and 65535)"
+                else
+                    break
+                fi
+            done
+            break
+        else
+            echo "Invalid input. Please enter 'y' or 'n'."
+        fi
+    done
     # Replace "1194" with new port number in docker-compose.yml
-    sed -i "s/1194/$new_port/g" ./docker-compose.yml
+    sed -i "s/$current_port:/$new_port:/" ./docker-compose.yml
+    sed -i "s/^container_name:.*/container_name:$container_name_open/g" $file_location_open/docker-compose.yml
     # run docker for create config file
     genconfdocker
     # Replace "1194" with new port number in openvpn.conf
     sed -i "s/1194/$new_port/g" ./openvpn-data/conf/openvpn.conf
-
+    sed -i "s/proto udp/proto $protocol/" ./openvpn-data/conf/openvpn.conf
     echo "Port number changed to $new_port"
 }
 
