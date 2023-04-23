@@ -1,5 +1,30 @@
 #!/bin/bash
 
+dockercheck() {
+    # Check if Docker is already installed
+    if ! command -v docker &>/dev/null; then
+        echo $(tput setaf 2)Docker is not installed on this system. Installing Docker...$(tput sgr0)
+
+        # Install Docker using the official Docker installation script
+        curl -sSL https://get.docker.com | sh
+
+        # Add the current user to the docker group so you can run Docker commands without sudo
+        usermod -aG docker $USER
+
+        # Start the Docker service
+        service docker start
+
+        sleep 5
+        clear
+        echo $(tput setaf 2)Docker has been installed successfully!$(tput sgr0)
+    else
+        echo $(tput setaf 2)Docker is already installed on this system.$(tput sgr0)
+    fi
+
+    sleep 5
+    clear
+}
+
 getadd() {
     # Prompt user for domain or IP address
     read -p "Enter domain or IP address (leave blank for public IP): " address
@@ -48,7 +73,8 @@ getadd() {
 }
 
 genconfdocker() {
-    #docker-compose run --rm openvpn ovpn_genconfig -u $protocol://$address
+    # run docker for create config file
+    docker-compose run --rm openvpn ovpn_genconfig -u $protocol://$address
 }
 
 changeport() {
@@ -62,7 +88,8 @@ changeport() {
 
     # Replace "1194" with new port number in docker-compose.yml
     sed -i "s/1194/$new_port/g" ./docker-compose.yml
-
+    # run docker for create config file
+    genconfdocker
     # Replace "1194" with new port number in openvpn.conf
     sed -i "s/1194/$new_port/g" ./openvpn-data/conf/openvpn.conf
 
@@ -70,6 +97,6 @@ changeport() {
 }
 
 #run
+dockercheck
 getadd
-genconfdocker
 changeport
