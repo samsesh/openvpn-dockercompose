@@ -6,7 +6,8 @@ services:
     container_name: openvpn
     ports:
      - "1194:1194/udp"
+     - "1194:1194"
     cap_add:
      - NET_ADMIN
     volumes:
-     - ./openvpn-data/conf:/etc/openvpn
+     - ./openvpn-data/conf:/etc/openvpn:rw
