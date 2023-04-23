@@ -6,13 +6,13 @@ dockercheck() {
         echo $(tput setaf 2)Docker is not installed on this system. Installing Docker...$(tput sgr0)
 
         # Install Docker using the official Docker installation script
-        curl -sSL https://get.docker.com | sh
+        curl -sSL https://get.docker.com | sudo sh
 
         # Add the current user to the docker group so you can run Docker commands without sudo
-        usermod -aG docker $USER
+        sudo usermod -aG docker $USER
 
         # Start the Docker service
-        service docker start
+        sudo service docker start
 
         sleep 5
         clear
