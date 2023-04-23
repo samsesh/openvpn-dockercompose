@@ -8,7 +8,7 @@ cd openvpn-dockercompose
 
 ```bash
 bash fisrtconf.sh
-docker-compose run --rm openvpn ovpn_initpki
+docker compose run --rm openvpn ovpn_initpki
 ```
 
 * Fix ownership (depending on how to handle your backups, this may not be needed)
@@ -20,37 +20,37 @@ sudo chown -R $(whoami): ./openvpn-data
 * Start OpenVPN server process
 
 ```bash
-docker-compose up -d openvpn
+docker compose up -d openvpn
 ```
 
 * You can access the container logs with
 
 ```bash
-docker-compose logs -f
+docker compose logs -f
 ```
 
 * Generate a client certificate for testUserName
 
 ```bash
 # with a passphrase (recommended)
-docker-compose run --rm openvpn easyrsa build-client-full testUserName
+docker compose run --rm openvpn easyrsa build-client-full testUserName
 # without a passphrase (not recommended)
-docker-compose run --rm openvpn easyrsa build-client-full testUserName nopass
+docker compose run --rm openvpn easyrsa build-client-full testUserName nopass
 ```
 
 * Retrieve the client configuration with embedded certificates
 
 ```bash
-docker-compose run --rm openvpn ovpn_getclient testUserName > testUserName.ovpn
+docker compose run --rm openvpn ovpn_getclient testUserName > testUserName.ovpn
 ```
 
 * Revoke a client certificate
 
 ```bash
 # Keep the corresponding crt, key and req files.
-docker-compose run --rm openvpn ovpn_revokeclient testUserName
+docker compose run --rm openvpn ovpn_revokeclient testUserName
 # Remove the corresponding crt, key and req files.
-docker-compose run --rm openvpn ovpn_revokeclient testUserName remove
+docker compose run --rm openvpn ovpn_revokeclient testUserName remove
 ```
 
 ## Debugging Tips
@@ -58,5 +58,5 @@ docker-compose run --rm openvpn ovpn_revokeclient testUserName remove
 * Create an environment variable with the name DEBUG and value of 1 to enable debug output (using "docker -e").
 
 ```bash
-docker-compose run -e DEBUG=1 openvpn
+docker compose run -e DEBUG=1 openvpn
 ```
