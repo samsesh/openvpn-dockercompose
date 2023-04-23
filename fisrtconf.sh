@@ -74,7 +74,7 @@ getadd() {
 
 genconfdocker() {
     # run docker for create config file
-    docker-compose run --rm openvpn ovpn_genconfig -u $protocol://$address
+    docker compose run --rm openvpn ovpn_genconfig -u $protocol://$address
 }
 
 changeport() {
