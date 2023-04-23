@@ -117,14 +117,13 @@ changeport() {
     # Replace new port number in docker-compose.yml
     sed -i "s/$current_port/$new_port/g" ./openvpn-data/conf/openvpn.conf
     sed -i "s/proto udp/proto $protocol/" ./openvpn-data/conf/openvpn.conf
-    clear
     sudo chown -R $(whoami): ./openvpn-data
+    clear
     echo "$(tput setaf 2)now run this command for set passphrase for openvpn server$(tput sgr0)"
-    echo "docker-compose run --rm openvpn ovpn_initpki"
+    echo "docker compose run --rm openvpn ovpn_initpki"
     echo ""
     echo "$(tput setaf 2)then run this command for start your server$(tput sgr0)"
     echo "docker compose up -d"
-
 }
 
 #run
