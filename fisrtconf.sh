@@ -117,6 +117,8 @@ changeport() {
     echo 'push "dhcp-option DNS6 2606:4700:4700::1001"' >>./openvpn-data/conf/openvpn.conf
     sudo chown -R $(whoami): ./openvpn-data
     clear
+}
+docs() {
     echo "$(tput setaf 2)now run this command for set passphrase for openvpn server$(tput sgr0)"
     echo "docker compose run --rm openvpn ovpn_initpki"
     echo ""
@@ -135,7 +137,8 @@ changeport() {
     echo "$(tput setaf 5)--- --- --- --- --- ---$(tput sgr0)"
 }
 
-#run
+run
 dockercheck
 getadd
 changeport
+docs
