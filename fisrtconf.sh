@@ -111,15 +111,17 @@ changeport() {
             echo "Invalid input. Please enter 'y' or 'n'."
         fi
     done
-
+    
+    sed -i "s/1194/$new_port/g" ./docker-compose.yml
     sed -i "s/$current_port/$new_port/" ./docker-compose.yml
+
     genconfdocker
     sed -i "s/proto udp/proto $protocol/" ./openvpn-data/conf/openvpn.conf
     sed -i "s/port 1194/port $new_port/" ./openvpn-data/conf/openvpn.conf
-    echo 'push "dhcp-option DNS 1.0.0.1"' >> ./openvpn-data/conf/openvpn.conf
-    echo 'push "dhcp-option DNS 1.1.1.1"' >> ./openvpn-data/conf/openvpn.conf
-    echo 'push "dhcp-option DNS6 2606:4700:4700::1111"' >> ./openvpn-data/conf/openvpn.conf
-    echo 'push "dhcp-option DNS6 2606:4700:4700::1001"' >> ./openvpn-data/conf/openvpn.conf
+    echo 'push "dhcp-option DNS 1.0.0.1"' >>./openvpn-data/conf/openvpn.conf
+    echo 'push "dhcp-option DNS 1.1.1.1"' >>./openvpn-data/conf/openvpn.conf
+    echo 'push "dhcp-option DNS6 2606:4700:4700::1111"' >>./openvpn-data/conf/openvpn.conf
+    echo 'push "dhcp-option DNS6 2606:4700:4700::1001"' >>./openvpn-data/conf/openvpn.conf
     sudo chown -R $(whoami): ./openvpn-data
     clear
     echo "$(tput setaf 2)now run this command for set passphrase for openvpn server$(tput sgr0)"
