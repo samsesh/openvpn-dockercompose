@@ -112,7 +112,7 @@ changeport() {
         fi
     done
 
-    sed -i "s/$current_port:/$new_port:/" ./docker-compose.yml
+    sed -i "s/$current_port/$new_port/" ./docker-compose.yml
     genconfdocker
     sed -i "s/proto udp/proto $protocol/" ./openvpn-data/conf/openvpn.conf
     sed -i "s/port 1194/port $new_port/" ./openvpn-data/conf/openvpn.conf
