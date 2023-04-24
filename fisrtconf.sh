@@ -50,13 +50,6 @@ getadd() {
         fi
     fi
 
-    # Confirm address with user
-    read -p "Use address $address? (y/n): " confirm
-    if [[ "$confirm" != "y" ]]; then
-        echo "Aborted."
-        exit 1
-    fi
-
     # Prompt user to select protocol type
     while true; do
         echo "Select protocol type:"
@@ -111,7 +104,7 @@ changeport() {
             echo "Invalid input. Please enter 'y' or 'n'."
         fi
     done
-    
+
     sed -i "s/1194/$new_port/g" ./docker-compose.yml
     sed -i "s/$current_port/$new_port/" ./docker-compose.yml
 
@@ -129,6 +122,17 @@ changeport() {
     echo ""
     echo "$(tput setaf 2)then run this command for start your server$(tput sgr0)"
     echo "docker compose up -d"
+    echo ""
+    echo "$(tput setaf 2)You can use the following commands to create a new user$(tput sgr0)"
+    echo "docker compose run --rm openvpn easyrsa build-client-full testUserName"
+    echo "docker compose run --rm openvpn easyrsa build-client-full testUserName nopass"
+    echo ""
+    echo "$(tput setaf 5)--- --- --- --- --- ---$(tput sgr0)"
+    echo "For more information, file README.md Read or check the link below"
+    echo "https://github.com/samsesh/openvpn-dockercompose/tree/Localhost#readme"
+    echo ""
+    echo "$(tput setaf 4)samsesh.net$(tput sgr0)"
+    echo "$(tput setaf 5)--- --- --- --- --- ---$(tput sgr0)"
 }
 
 #run
