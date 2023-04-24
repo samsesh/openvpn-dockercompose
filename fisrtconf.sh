@@ -115,7 +115,7 @@ changeport() {
     # run docker for create config file
     genconfdocker
     # Replace new port number in docker-compose.yml
-    sed -i "s/$current_port/$new_port/g" ./openvpn-data/conf/openvpn.conf
+    sed -i "s/$current_port:/$new_port:/" ./docker-compose.yml
     sed -i "s/proto udp/proto $protocol/" ./openvpn-data/conf/openvpn.conf
     sudo chown -R $(whoami): ./openvpn-data
     clear
