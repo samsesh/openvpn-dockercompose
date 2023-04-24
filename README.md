@@ -4,19 +4,15 @@ clone this project and go to directory
 git clone https://github.com/samsesh/openvpn-dockercompose.git
 cd openvpn-dockercompose
 ```
- Initialize the configuration files and certificates
+ Initialize the configuration files 
 
 ```bash
 bash fisrtconf.sh
+```
+and certificates
+```bash
 docker compose run --rm openvpn ovpn_initpki
 ```
-
-* Fix ownership (depending on how to handle your backups, this may not be needed)
-
-```bash
-sudo chown -R $(whoami): ./openvpn-data
-```
-
 * Start OpenVPN server process
 
 ```bash
