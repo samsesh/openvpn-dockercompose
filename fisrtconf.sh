@@ -80,6 +80,7 @@ changeport() {
     # Check current port in docker-compose.yml file
     current_port=$(grep -oP '\d+:\d+\/udp' docker-compose.yml | cut -d':' -f1)
     while true; do
+        echo "$(tput setaf 5)If you change the port, you need to change the port after outputting the connection file so that the user can connect.$(tput sgr0)"
         read -p "Enter new port number (Current port is $current_port)Do you want to change it? (y/n): " confirm
 
         if [[ "$confirm" == "n" ]]; then
