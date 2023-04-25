@@ -4,7 +4,7 @@ clone this project and go to directory
 git clone https://github.com/samsesh/openvpn-dockercompose.git
 cd openvpn-dockercompose
 ```
- Initialize the configuration files 
+run setup for Initialize the configuration files and set port and porotcol 
 
 ```bash
 bash fisrtconf.sh
